@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>edu.boun.iris</groupId>
+    <artifactId>iris-protege-plugin</artifactId>
+    <version>2.1.0</version>
+    <packaging>bundle</packaging>
+
+    <name>IRIS Protege Plugin</name>
+    <description>IRIS is a declarative and manual tree wrapper that extracts semi-structured product information from online shops and presents this information in a GoodRelations-compliant ontology.</description>
+    <url>https://github.com/erkinalp/iris2.1</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <protege.version>5.6.8</protege.version>
+        <owlapi.version>4.5.29</owlapi.version>
+        <slf4j.version>1.7.36</slf4j.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://raw.githubusercontent.com/protegeproject/mvn-repo/master/releases</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- Protege dependencies -->
+        <dependency>
+            <groupId>edu.stanford.protege</groupId>
+            <artifactId>protege-editor-core</artifactId>
+            <version>${protege.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>edu.stanford.protege</groupId>
+            <artifactId>protege-editor-owl</artifactId>
+            <version>${protege.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- OWL API -->
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>owlapi-osgidistribution</artifactId>
+            <version>${owlapi.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- HtmlUnit for web scraping -->
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.70.0</version>
+        </dependency>
+
+        <!-- JIDE for CheckBoxTree -->
+        <dependency>
+            <groupId>com.jidesoft</groupId>
+            <artifactId>jide-oss</artifactId>
+            <version>3.7.12</version>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>5.1.9</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>edu.boun.iris;singleton:=true</Bundle-SymbolicName>
+                        <Bundle-Name>IRIS Protege Plugin</Bundle-Name>
+                        <Bundle-Version>${project.version}</Bundle-Version>
+                        <Bundle-Vendor>Bogazici University</Bundle-Vendor>
+                        <Bundle-ClassPath>.</Bundle-ClassPath>
+                        <Import-Package>
+                            org.protege.editor.core.*;version="5.6",
+                            org.protege.editor.owl.*;version="5.6",
+                            org.semanticweb.owlapi.*;version="[4.5,5.0)",
+                            javax.swing.*,
+                            *
+                        </Import-Package>
+                        <Export-Package>
+                            edu.boun.iris.*;version="${project.version}"
+                        </Export-Package>
+                        <Embed-Dependency>
+                            htmlunit,
+                            htmlunit-core-js,
+                            htmlunit-cssparser,
+                            neko-htmlunit,
+                            xercesImpl,
+                            xml-apis,
+                            commons-codec,
+                            commons-io,
+                            commons-lang3,
+                            commons-logging,
+                            commons-net,
+                            commons-text,
+                            httpclient,
+                            httpcore,
+                            httpmime,
+                            jetty-client,
+                            jetty-http,
+                            jetty-io,
+                            jetty-util,
+                            jetty-xml,
+                            websocket-api,
+                            websocket-client,
+                            websocket-common,
+                            jide-oss
+                        </Embed-Dependency>
+                        <Embed-Transitive>true</Embed-Transitive>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
