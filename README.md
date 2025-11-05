@@ -3,6 +3,28 @@ IRIS Protege Plug-in
 
 IRIS is a declarative and manual tree wrapper that extracts the semi-structured product information from online shops and presents this information in a GoodRelations-compliant ontology. IRIS also automatically marks up your products using RDFa or Microdata. Creating GoodRelations snippets in RDFa or Microdata using the product information extracted from Web is a business value, especially when you consider most of the popular search engines including Google and Yahoo recommend the use of these standards to provide rich site data for their index. Finally, IRIS is a Protégé plug-in which is developed as an open source Java Application.
 
+## Version 2.1 - Protege 5.6.8 Port
+
+This version has been ported to work with Protege 5.6.8, featuring:
+- Migration from frame-based API to OWL API
+- Modern Maven-based build system with OSGi bundle configuration
+- Support for both Excel (.xls) and ODF (.ods) spreadsheet formats for units of measurement
+- All original functionality preserved including web scraping, GoodRelations integration, and ontology creation
+
+### Requirements
+
+- Java 11 or higher
+- Protege 5.6.8
+- Maven 3.6+ (for building from source)
+
+### Spreadsheet Format Support
+
+Units of measurement files (annex1 and annex2) can be provided in either:
+- Excel format (.xls) - legacy support using JXL library
+- ODF format (.ods) - modern open format using SODS library
+
+The plugin automatically detects and uses the appropriate format. ODF files are preferred if both formats are present.
+
 <h2>How can I use IRIS?</h2>
 It is simple:
 <ol>
