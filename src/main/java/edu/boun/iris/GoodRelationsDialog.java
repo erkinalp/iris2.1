@@ -14,8 +14,8 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
-import javax.swing.table.DefaultCellEditor;
-import javax.swing.table.DefaultComboBoxModel;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.TableColumnModel;
 
 import java.awt.event.ActionEvent;

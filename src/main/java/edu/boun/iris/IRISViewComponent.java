@@ -114,7 +114,7 @@ public class IRISViewComponent extends AbstractOWLViewComponent implements Actio
         ontologyManager = getOWLModelManager().getOWLOntologyManager();
         dataFactory = ontologyManager.getOWLDataFactory();
         
-        Optional<IRI> ontologyIRI = ontology.getOntologyID().getOntologyIRI();
+        com.google.common.base.Optional<IRI> ontologyIRI = ontology.getOntologyID().getOntologyIRI();
         if (ontologyIRI.isPresent()) {
             defaultNamespace = ontologyIRI.get().toString() + "#";
         } else {

@@ -409,7 +409,7 @@ public class HtmlUnitDefault {
     public static String getPropertyValue(Object element, Html2ProductNode p_child) {
         HtmlElement e = (HtmlElement) element;
         if (p_child.getMethod.startsWith("asText"))
-            return e.asText();
+            return e.asNormalizedText();
         else
             return e.getAttribute(p_child.getMethod);
     }
