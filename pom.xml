@@ -74,6 +74,13 @@
             <version>2.6.12</version>
         </dependency>
 
+        <!-- SODS for ODF spreadsheet parsing -->
+        <dependency>
+            <groupId>com.github.miachm.sods</groupId>
+            <artifactId>SODS</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -149,7 +156,9 @@
                             websocket-api,
                             websocket-client,
                             websocket-common,
-                            jide-oss
+                            jide-oss,
+                            jxl,
+                            SODS
                         </Embed-Dependency>
                         <Embed-Transitive>true</Embed-Transitive>
                     </instructions>
