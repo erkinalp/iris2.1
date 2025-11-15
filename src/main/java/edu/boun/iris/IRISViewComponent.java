@@ -44,9 +44,18 @@ import javax.swing.tree.TreePath;
 import org.protege.editor.owl.ui.view.AbstractOWLViewComponent;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import edu.boun.iris.ontology.GenericOntologyRetriever;
+import edu.boun.iris.ontology.OntologyRetriever;
+import edu.boun.iris.ontology.OntologyRetrievalException;
+import edu.boun.iris.ontology.OntologySource;
+import edu.boun.iris.ontology.OntologySourceLoader;
 
 public class IRISViewComponent extends AbstractOWLViewComponent implements ActionListener, MouseListener {
 
+    private static final Logger logger = LoggerFactory.getLogger(IRISViewComponent.class);
     private static final long serialVersionUID = 1L;
     protected JTextField textField;
     protected JTextArea textArea;
@@ -99,6 +108,9 @@ public class IRISViewComponent extends AbstractOWLViewComponent implements Actio
     private OWLOntologyManager ontologyManager;
     private OWLDataFactory dataFactory;
     private String defaultNamespace;
+    
+    private OntologyRetriever ontologyRetriever;
+    private java.util.List<OntologySource> ontologySources;
 
     @Override
     protected void initialiseOWLView() throws Exception {
@@ -262,6 +274,10 @@ public class IRISViewComponent extends AbstractOWLViewComponent implements Actio
         }
         add(splitPane9, BorderLayout.CENTER);
         um_manager = new UnitsofMeasurementManager();
+        
+        ontologyRetriever = new GenericOntologyRetriever();
+        ontologySources = OntologySourceLoader.loadOntologySources();
+        logger.info("Loaded {} ontology sources", ontologySources.size());
     }
 
     @Override
@@ -474,19 +490,51 @@ public class IRISViewComponent extends AbstractOWLViewComponent implements Actio
     }
 
     public void openGoodRelationsVocabulary() throws Exception {
-
         InputStream is = null;
+        
+        OntologySource goodRelationsSource = null;
+        for (OntologySource source : ontologySources) {
+            if ("GoodRelations".equals(source.getName())) {
+                goodRelationsSource = source;
+                break;
+            }
+        }
+        
+        if (goodRelationsSource != null && goodRelationsSource.isEnabled()) {
+            try {
+                logger.info("Attempting to retrieve GoodRelations vocabulary from network");
+                is = ontologyRetriever.retrieveOntology(goodRelationsSource);
+                if (is != null) {
+                    ontologyManager.loadOntologyFromOntologyDocument(is);
+                    goodRelationsVocabulary_opened = true;
+                    logger.info("Successfully loaded GoodRelations vocabulary from network");
+                    if (is != null) {
+                        is.close();
+                    }
+                    return;
+                }
+            } catch (OntologyRetrievalException e) {
+                logger.warn("Failed to retrieve GoodRelations from network, falling back to bundled version", e);
+            } catch (Exception e) {
+                logger.warn("Error loading GoodRelations from network, falling back to bundled version", e);
+            }
+        }
+        
         try {
+            logger.info("Loading bundled GoodRelations vocabulary");
             is = IRISViewComponent.class.getResourceAsStream("/resources/GoodRelations_v1.owl");
             if (is != null) {
                 ontologyManager.loadOntologyFromOntologyDocument(is);
                 goodRelationsVocabulary_opened = true;
+                logger.info("Successfully loaded bundled GoodRelations vocabulary");
             }
             if (is != null) {
                 is.close();
             }
         } catch (FileNotFoundException e) {
+            logger.error("Bundled GoodRelations vocabulary not found", e);
         } catch (IOException e) {
+            logger.error("Error loading bundled GoodRelations vocabulary", e);
         }
     }
 
